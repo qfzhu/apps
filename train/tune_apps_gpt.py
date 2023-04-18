@@ -14,7 +14,7 @@ import json
 import transformers
 
 from tqdm import tqdm
-from datasets import load_dataset
+# from datasets import load_dataset
 from datetime import datetime
 
 import torch
@@ -82,7 +82,7 @@ def run_training(args, train_data):
 
         learning_rate=args.lr,
         weight_decay=0.05,
-        # warmup_steps=args.lr_warmup_steps,
+        warmup_steps=args.lr_warmup_steps,
         # max_grad_norm=100000.0,
 
         logging_dir=args.save_dir, 
@@ -162,7 +162,7 @@ if __name__ == "__main__":
     # Training
     parser.add_argument('--epochs', default=10, type=int)
     parser.add_argument('--lr', default=5e-5, type=float)
-    # parser.add_argument('--lr-warmup-steps', default=500, type=int)
+    parser.add_argument('--lr-warmup-steps', default=500, type=int)
     parser.add_argument('--batch-size-per-replica', default=8, type=int)
     parser.add_argument('--grad-acc-steps', default=4, type=int)
     parser.add_argument('--local_rank', default=-1, type=int)
