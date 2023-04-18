@@ -36,14 +36,7 @@ class APPSBaseDataset(torch.utils.data.Dataset):
         self.samples = []           # Should be set in initialize()
         self.initialize()
 
-        if ('EleutherAI' in mode or '2700' in mode):
-            self.tokenizer = transformers.GPT2Tokenizer.from_pretrained("EleutherAI/gpt-neo-2.7B")
-        elif 'gpt' in self.mode: # Should handle GPT-2 and GPT-Neo
-            self.tokenizer = transformers.GPT2Tokenizer.from_pretrained(mode)
-        elif self.mode in {'codebert'}:
-            self.tokenizer = transformers.RobertaTokenizer.from_pretrained("microsoft/codebert-base")
-        else:
-            raise NotImplementedError()
+        self.tokenizer = transformers.AutoTokenizer.from_pretrained(mode)
 
 
     def initialize(self):

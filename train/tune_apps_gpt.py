@@ -37,28 +37,9 @@ torch.multiprocessing.set_sharing_strategy('file_system')
 
 def run_training(args, train_data):
 
-    ## Checkpoint Loading ######################################################## 
-    if args.load:
-        if '2700' in args.load:
-            model = transformers.GPTNeoForCausalLM.from_pretrained(args.load)
-        else:
-            model = transformers.GPT2LMHeadModel.from_pretrained(args.load)
-        print(f"Loaded model from {args.load}")
-    else:
-        if "EleutherAI" in args.arch:
-            model = transformers.GPTNeoForCausalLM.from_pretrained(args.arch)
-        else:
-            model = transformers.GPT2LMHeadModel.from_pretrained(args.arch)
-
-    if args.resume:
-        raise NotImplementedError
-        model = transformers.GPT2LMHeadModel.from_pretrained(args.resume)
-        print(f"Loaded model from {args.resume}")
-        start_epoch = 0
-        start_iteration = int(args.resume.split("-")[-1])
-        print("start_iteration = ", start_iteration)
-    else:
-        start_iteration = 0
+    ## Checkpoint Loading ########################################################
+    model = transformers.CodeGenForCausalLM.from_pretrained(args.arch)
+    start_iteration = 0
 
     ## Dataloading ######################################################## 
     train_data.start_iteration = start_iteration
@@ -122,7 +103,7 @@ def get_dataset(args):
         dataroot=args.apps_dataroot, 
         problem_dirs=fnames,
         mode=args.arch, 
-        max_tokens=2048 if ('EleutherAI' in args.arch or '2700' in args.load) else 1024,
+        max_tokens=1024,
         sample_mode=args.apps_sample_mode
     )
 
@@ -149,7 +130,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Language Modelling on Code")
-    parser.add_argument('--arch', default='gpt2', choices=transformers.GPT2_PRETRAINED_MODEL_ARCHIVE_LIST + ["EleutherAI/gpt-neo-2.7B"])
+    parser.add_argument('--arch', default='Salesforce/codegen-2B-mono')
     parser.add_argument('--dummy-model', action='store_true')
     parser.add_argument('--load', default=None, type=str)
     parser.add_argument('--resume', default=None, type=str)
