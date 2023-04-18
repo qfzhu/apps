@@ -151,20 +151,11 @@ class APPSBaseDataset(torch.utils.data.Dataset):
         
         raw_samples = self.pack_samples(idx)
 
-        if 'gpt' in self.mode:
-            retval = sample_gpt_task(
-                raw_samples,
-                max_tokens=self.max_tokens, 
-                tokenizer=self.tokenizer, 
-            )
-        elif self.mode in {'codebert'}:
-            retval = sample_gpt_task(
-                raw_samples,
-                max_tokens=self.max_tokens, 
-                tokenizer=self.tokenizer, 
-            )
-        else:
-            raise NotImplementedError()
+        retval = sample_gpt_task(
+            raw_samples,
+            max_tokens=self.max_tokens,
+            tokenizer=self.tokenizer,
+        )
     
         gc.collect()
         return retval
