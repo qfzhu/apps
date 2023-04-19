@@ -36,7 +36,7 @@ class APPSBaseDataset(torch.utils.data.Dataset):
         self.samples = []           # Should be set in initialize()
         self.initialize()
 
-        self.tokenizer = transformers.CodeGenForCausalLM.from_pretrained(mode)
+        self.tokenizer = transformers.CodeGenTokenizer.from_pretrained(mode)
 
 
     def initialize(self):
